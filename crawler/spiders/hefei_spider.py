@@ -61,9 +61,13 @@ class HefeiSpider(scrapy.Spider):
         for sel in response.css(css_list):
             # print(sel)
             item = HefeiItem()
-            item['title'] = sel.xpath(xpath_item_title).extract()
-            item['time'] = sel.xpath(xpath_item_time).extract()
-            item['link'] = sel.xpath(xpath_item_link).extract()
+            item['title'] = sel.xpath(xpath_item_title).extract()[0]
+            item['time'] = sel.xpath(xpath_item_time).extract()[0]
 
+            # print(type(sp_allowed_domains[0]))
+            # print(type(sel.xpath(xpath_item_link).extract()[0]))
+
+
+            item['link'] = sp_allowed_domains[0] + sel.xpath(xpath_item_link).extract()[0]
             # print(item['title'], item['time'], item['link'])
             yield item

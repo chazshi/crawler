@@ -6,14 +6,14 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 # from utils import *
-import utils
+import utils as mysql
 
 
 class CrawlerPipeline(object):
     def process_item(self, item, spider):
         return item
 
-# 验证是否一个title是否对应一个time和一个link
+# 验证是否一个title是否对应一个time和一个link ## 不校验了
 class CheckPipeline(object):
     def process_item(self, item, spider):
         if(item):
@@ -21,7 +21,7 @@ class CheckPipeline(object):
             tmLen = len(item['time'])
             lLen = len(item['link'])
 
-            # print(item['title'], item['time'], item['link'])
+            print(item['title'], item['time'], item['link'])
 
             if(tLen == tmLen & tmLen == lLen):
                 return item
@@ -57,18 +57,20 @@ class DuplicatesPipeline(object):
 
 
 # 存入mysql数据库
-# http://www.runoob.com/python/python-mysql.html
+# https://www.cnblogs.com/conanwang/p/6028110.html
 class MysqlPipeline(object):
     def __init__(self, mysql_uri, mysql_user, mysql_password, mysql_database):
         # self.mysql_uri = mysql_uri
         # self.mysql_user = mysql_user
         # self.mysql_password = mysql_password
         # self.mysql_database = mysql_database
-        self.client = utils.MysqlCon(mysql_uri, mysql_user, mysql_password, mysql_database)
+        self.client = mysql.MysqlCon(mysql_uri, mysql_user, mysql_password, mysql_database)
 
+    
 
     def open_spider(self, spider):
-        self.client.openCon()
+        pass
+        # self.client.openCon()
         # print('ok')
         # print(self.client)
         # self.cursor = self.client.cursor()
@@ -105,7 +107,13 @@ class MysqlPipeline(object):
         # test()
         # print(spider.name)
         
+        
         self.client.createTable(spider.name)
-
+        
+        self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name)
 
         return item
+
+
+class MonitorPipeline(object):
+    pass

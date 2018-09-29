@@ -99,10 +99,10 @@ ROBOTSTXT_OBEY = False
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
 #    'crawler.pipelines.CrawlerPipeline': 300,
-   'crawler.pipelines.CheckPipeline': 400,
-   'crawler.pipelines.DuplicatesPipeline': 500,
-   'crawler.pipelines.MysqlPipeline': 600,
-   
+#    'crawler.pipelines.CheckPipeline': 400,
+   'crawler.pipelines.DuplicatesPipeline': 500, # 去重
+   'crawler.pipelines.MysqlPipeline': 600,  # 存入数据库
+   'crawler.pipelines.MonitorPipeline' : 700, # 监测需要的信息
    
 }
 

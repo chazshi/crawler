@@ -31,7 +31,8 @@ def __crawl_task(__spider_name):
 
     __task_os_cmd = 'scrapy crawl '
     __task_os_cmd += __spider_name
-    # __task_os_cmd += ' --nolog'         # 不显示日志
+
+    __task_os_cmd += ' --nolog'         # 不显示日志
 
     _time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
     __task_os_cmd += ' -o ./log/%s_%s.json' % (_time, __spider_name)    # 输出到文件
@@ -59,8 +60,17 @@ def mymain():
     __getSpiders()  # 获取爬虫名
     schedule.enter(0,0,perform1,(__crawler_time,))
 
+def startServer():
+    # os.system("python ./crawlersite/manage.py runserver")
+    os.system("python api.py")
+    
+
+def startedServer():
+    print('Server started!')
+
 if __name__=="__main__":
     mymain()
+    # __crawler_pool.submit(startServer).add_done_callback(startedServer) #api服务
     schedule.run()  # 开始运行，直到计划时间队列变成空为止
 
 

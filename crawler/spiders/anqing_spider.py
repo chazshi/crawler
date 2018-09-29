@@ -3,7 +3,7 @@ import scrapy
 from crawler.items import AnqingItem
 
 sp_name = 'anqing'                          # 爬虫名
-sp_allowed_domains = ['www.aqzbcg.org']     # 允许访问的域名
+sp_allowed_domains = ['www.aqzbcg.org:1102']     # 允许访问的域名
 sp_start_urls = ['http://www.aqzbcg.org:1102/jyxx/012002/012002001/project.html']   # 要爬取的页面
 xpath_title = '/html/head/title/text()'                 # 标题，暂时没用上
 css_list = '.ewb-span18 .wb-data-item .wb-data-list'    # 爬取li的css
@@ -33,9 +33,10 @@ class AnqingSpider(scrapy.Spider):
         for sel in response.css(css_list):
             # print(sel)
             item = AnqingItem()
-            item['title'] = sel.xpath(xpath_item_title).extract()
-            item['time'] = sel.xpath(xpath_item_time).extract()
-            item['link'] = sel.xpath(xpath_item_link).extract()
+            item['title'] = sel.xpath(xpath_item_title).extract()[0]
+            item['time'] = sel.xpath(xpath_item_time).extract()[0]
+            
+            item['link'] = sp_allowed_domains[0] + sel.xpath(xpath_item_link).extract()[0]
 
             # print(item['title'], item['time'], item['link'])
             yield item
