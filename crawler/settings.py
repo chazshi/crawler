@@ -15,11 +15,18 @@ SPIDER_MODULES = ['crawler.spiders']
 NEWSPIDER_MODULE = 'crawler.spiders'
 
 
+# import sys
+# print("stttings. sys.path： %s" % sys.path)
+from settings import Settings as msetting
+
+# import sys
+# sys.path.append("..")
+# import settings as msetting
 # mysql配置项
-MYSQL_URI = 'localhost'
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = '123456'
-MYSQL_DATABASE = 'crawler'
+MYSQL_URI = msetting.MYSQL_URI
+MYSQL_USER = msetting.MYSQL_USER
+MYSQL_PASSWORD = msetting.MYSQL_PASSWORD
+MYSQL_DATABASE = msetting.MYSQL_DATABASE
 
 
 # 代理配置项

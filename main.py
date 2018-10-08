@@ -7,7 +7,7 @@ from concurrent.futures import ThreadPoolExecutor
 __crawler_pool = ThreadPoolExecutor(30) #创建1个程池中，容纳线程个数为30个
 
 __crawler_spiders = []  # 保存spider名
-__crawler_time = 600    # 10分钟
+__crawler_time = 600 #600    # 10分钟
 
 #初始化sched模块的scheduler类
 #第一个参数是一个可以返回时间戳的函数，第二个参数可以在定时未到达之前阻塞。
@@ -35,7 +35,7 @@ def __crawl_task(__spider_name):
     __task_os_cmd += ' --nolog'         # 不显示日志
 
     _time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
-    __task_os_cmd += ' -o ./log/%s_%s.json' % (_time, __spider_name)    # 输出到文件
+    # __task_os_cmd += ' -o ./log/%s_%s.json' % (_time, __spider_name)    # 输出到文件
     # __task_os_cmd += ' -t json'         # 输出文件后缀名
 
     # print(__task_os_cmd)
@@ -61,8 +61,9 @@ def mymain():
     schedule.enter(0,0,perform1,(__crawler_time,))
 
 def startServer():
-    # os.system("python ./crawlersite/manage.py runserver")
-    os.system("python api.py")
+    # print("只执行一次，不会反复执行")
+    os.system("python ./crawlerview/manage.py runserver")
+    # os.system("python api.py")
     
 
 def startedServer():
@@ -70,7 +71,7 @@ def startedServer():
 
 if __name__=="__main__":
     mymain()
-    # __crawler_pool.submit(startServer).add_done_callback(startedServer) #api服务
+    __crawler_pool.submit(startServer).add_done_callback(startedServer) #api服务 # 这里不会周期执行
     schedule.run()  # 开始运行，直到计划时间队列变成空为止
 
 

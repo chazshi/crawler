@@ -6,7 +6,7 @@
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 # from utils import *
-import utils as mysql
+from utils import MysqlCon as mysql
 
 
 class CrawlerPipeline(object):
@@ -64,12 +64,14 @@ class MysqlPipeline(object):
         # self.mysql_user = mysql_user
         # self.mysql_password = mysql_password
         # self.mysql_database = mysql_database
-        self.client = mysql.MysqlCon(mysql_uri, mysql_user, mysql_password, mysql_database)
+        self.client = mysql(mysql_uri, mysql_user, mysql_password, mysql_database)
 
     
 
     def open_spider(self, spider):
+        # self.client.dropAllTable()
         pass
+
         # self.client.openCon()
         # print('ok')
         # print(self.client)
@@ -108,12 +110,15 @@ class MysqlPipeline(object):
         # print(spider.name)
         
         
-        self.client.createTable(spider.name)
+        self.client.createTable(spider.name)    #不存在则创建数据库 #多次执行，有优化空间
         
-        self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name)
-
+        self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name) # 存入数据库
+        
+        # res = self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name) # 存入数据库
+        # print('受影响条数：%s' % res) # 1正确 -1错误
         return item
 
 
 class MonitorPipeline(object):
+    # 关键词监测及提醒功能
     pass

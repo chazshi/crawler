@@ -1,0 +1,19 @@
+<h1>Dashboard</h1>
+<ul>
+    {% for item in items %}
+        <li>
+            {% for row in item %}
+                <span>{{ row }}</span>
+                &nbsp;&nbsp;&nbsp;
+            {% endfor %}
+            
+            <!-- <h2>项目名：</h2>
+            <span>{{ item }}</span> -->
+            <!-- TODO: 分开显示？ -->
+
+        </li>
+        
+    {% endfor %}
+</ul>
+
+<h2></h2>
