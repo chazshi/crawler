@@ -61,7 +61,7 @@ class MysqlCon(object):
         # print("创建数据库")
 
         sql = """CREATE TABLE IF NOT EXISTS %s (
-            title varchar(300) primary key NOT NULL, 
+            title varchar(250) primary key NOT NULL, 
             time varchar(300) NOT NULL, 
             link varchar(300) NOT NULL
             );""" % table
@@ -119,8 +119,16 @@ class MysqlCon(object):
         #     pass
         
 
+    # 1.查询所有表数据
+    def getAllItems(self):
+        pass
 
-    def getAllItems(self, table):
+    # 2.获取所有表名
+    def getAllTableName(self):
+        pass
+
+    # 3.根据表名获取表数据
+    def getAllItemsByTableName(self, table):
         sql = """SELECT * FROM %s;""" % table
         self.count = self.cursor.execute(sql)    #返回数据条数
         
@@ -129,3 +137,9 @@ class MysqlCon(object):
         result = self.cursor.fetchall()
         # print(type(result))
         return result
+    
+    # 4.关键词查询
+    def getItemsLike(self):
+        pass
+
+    

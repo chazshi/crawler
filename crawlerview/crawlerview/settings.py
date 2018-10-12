@@ -1,3 +1,5 @@
+ # -*- coding: UTF-8 -*-
+
 """
 Django settings for crawlerview project.
 
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'rest_framework',
-     
+    'City',
     # 'crawler',
 ]
 
@@ -47,7 +49,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',  # 跨域选项
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -79,13 +81,27 @@ WSGI_APPLICATION = 'crawlerview.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+import sys
+pwd = os.getcwd() # 获取当前路径
+print("pwd: %s" % pwd)
+sys.path.append(pwd)
+from settings import Settings as msetting
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': msetting.MYSQL_DATABASE,
+        'USER': msetting.MYSQL_USER,
+        'PASSWORD': msetting.MYSQL_PASSWORD,
+        'HOST': msetting.MYSQL_URI,
+        'PORT': 3306,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators

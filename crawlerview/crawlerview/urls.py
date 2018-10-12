@@ -15,11 +15,19 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+# from django.
 # import url
 
-from .app import views as crawler_view   
+from .app import index as crawler_index
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', crawler_view.index),   # 主页面
+    path('', crawler_index.index),   # 显示页面
+    # path('api/', include('rest_framework.urls', namespace='rest_framework')),
+
+    path('add/', crawler_index.add),   # 添加mock数据
+    path('drop/', crawler_index.drop),   # 删除所有数据表
+
+    path('api/', crawler_index.api),   # get post city数据 api
 ]
 
