@@ -1,14 +1,15 @@
 from rest_framework import serializers
-from City.models import Anqing
-from City.models import Hefei
+from Infos.models import Infos
 
 # serializers.Serializer会转换不了json
-class AnqingSerializer(serializers.ModelSerializer):
+class InfosSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Anqing
-        fields = ('title', 'time', 'link')
+        model = Infos
+        fields = ('id','city','title', 'time', 'link')
 
-class HefeiSerializer(serializers.ModelSerializer):
+
+class CitysSerializer(serializers.ModelSerializer):
+    city = serializers.CharField(max_length=10)
     class Meta:
-        model = Hefei
-        fields = ('title', 'time', 'link')
+        model = Infos
+        fields = ('city',)

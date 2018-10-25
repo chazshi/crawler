@@ -20,7 +20,7 @@ MYSQL_USER = msetting.MYSQL_USER
 MYSQL_PASSWORD = msetting.MYSQL_PASSWORD
 MYSQL_DATABASE = msetting.MYSQL_DATABASE
 
-# from utils import MysqlCon as mysql
+from utils import MysqlCon as mysql
 
 # client = mysql(MYSQL_URI, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 # result = client.getAllItemsByTableName('city_anqing')
@@ -29,27 +29,30 @@ MYSQL_DATABASE = msetting.MYSQL_DATABASE
 
 # client.closeCon()   # 执行完毕清除数据
 
-from City.models import Anqing
-from City.models import Hefei
+from Infos.models import Infos
 
 import datetime
 import random
 import copy
 
 
-from .serializers import AnqingSerializer
-from .serializers import HefeiSerializer
+from .serializers import InfosSerializer
+
+from .serializers import CitysSerializer
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 
+
+from rest_framework import serializers
+
 result = '123'
 
 # python manage.py runserver
 def drop(request):
-    drop = Anqing.objects.filter(title__contains="测试数据")
+    drop = Infos.objects.filter(title__contains="测试数据")
 
     context = {}
     context['items'] = copy.copy(drop)   # 浅拷贝，直接等号会被引用，删掉原始对象就不能打印了
@@ -61,35 +64,55 @@ def drop(request):
     return render(request, 'dropdata.html', context)
 
 def add(request):
-    # '%Y-%m-%d %H:%M'
-    anqing = Anqing(title="测试数据%s" % random.randrange(1,100,1), time=datetime.datetime.now().strftime('%Y-%m-%d'), link="www.baidu.com/%s" % random.randrange(1,100,1))
-    anqing.save()
+    infos = Infos( city="安庆", title="测试数据%s" % random.randrange(1,100,1), time=datetime.datetime.now().strftime('%Y-%m-%d %H:%M'), link="www.baidu.com/%s" % random.randrange(1,100,1))
+    infos.save()
 
-    print("anqing")
-    print(anqing.title)
+    print("infos")
+    print(infos.title)
 
     context = {}
-    context['items'] = [anqing, ]   #create(request)
+    context['items'] = [infos, ]   #create(request)
     return render(request, 'addmock.html', context)
 
 def index(request):
 
-    anqing = Anqing.objects.all()
+    infos = Infos.objects.all()
 
     context = {}
-    context['items'] = anqing   #create(request)
+    context['items'] = infos   #create(request)
     return render(request, 'dashboard.html', context)
 
 
+def citys(request, format=None):
 
-
-def api(request, format=None):
     if request.method == 'GET':
-        snippets = Anqing.objects.all()
+
+        snippets = Infos.objects.values("city").distinct()
+        # print('snippets: %s'%snippets)
+        # # return snippets
+
+        # L = []
+        # for l in snippets:
+        #     L.append(l)
+        # print(L)
+        
+        serializer = CitysSerializer(snippets, many=True)
+        # print('serializer.data: %s'%serializer.data)    
+        # serializer = CitysSerializer(L, many=False)
+        
+        return JsonResponse(serializer.data, safe=False)
+    #     return JSONRenderer().render(serializer.data)
+
+    # elif request.method == 'POST':
+    #     pass
+
+def infos(request, format=None):
+    if request.method == 'GET':
+        snippets = Infos.objects.all()
         # for item in snippets:
         #     print(item.title)
         
-        serializer = AnqingSerializer(snippets, many=True)
+        serializer = InfosSerializer(snippets, many=True)
         # print(json.dumps(serializer))
 
         # for v in serializer.data:
@@ -101,7 +124,7 @@ def api(request, format=None):
 
     elif request.method == 'POST':
         data = JSONParser().parse(request)
-        serializer = AnqingSerializer(data=data)
+        serializer = InfosSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
             return JsonResponse(serializer.data, status=201)

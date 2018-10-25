@@ -3,16 +3,19 @@ import scrapy
 from crawler.items import HefeiItem
 
 sp_name = 'hefei'                           # 爬虫名
+city = '合肥'
 sp_allowed_domains = ['ggzy.hefei.gov.cn']  # 允许访问的域名
 sp_start_urls = ['http://ggzy.hefei.gov.cn/jyxx/002002/002002001/moreinfo_jyxxgg.html']      # 要爬取的页面
-xpath_title = '/html/head/title/text()'         # 标题，暂时没用上
-css_list = '.ewb-right-item .ewb-right-list'    # 爬取li的css
+# xpath_title = '/html/head/title/text()'         # 标题，暂时没用上
+xpath_list = '//ul[@class="ewb-right-item"]/li[@class="ewb-right-list clearfix"]'    # 爬取li的css
+# css_list = '.ewb-right-item .ewb-right-list'    # 爬取li的css
 xpath_item_title = './a/span[last()]/text()'         # li中的主要信息
 xpath_item_time = './span/text()'           # li中的时间信息
 xpath_item_link = './a/@href'           # li中的链接信息
 
 class HefeiSpider(scrapy.Spider):
     name = sp_name
+    city = city
     allowed_domains = sp_allowed_domains
     start_urls = sp_start_urls
 
@@ -47,26 +50,22 @@ class HefeiSpider(scrapy.Spider):
         # 提取数据
 
         ## 提取标题数据
-        title = response.xpath(xpath_title).extract()[0]
+        # title = response.xpath(xpath_title).extract()[0]
 
         # print(title)
         ## 保存文件
-        filename = str(title) + '.html'
+        # filename = str(title) + '.html'
         # with open(filename, 'wb') as f:
         #     f.write(response.body)
         
         # print(len(response.css('.ewb-span18 .wb-data-item .wb-data-list')))
         
         # 提取重要数据
-        for sel in response.css(css_list):
+        for sel in response.xpath(xpath_list):
             # print(sel)
             item = HefeiItem()
             item['title'] = sel.xpath(xpath_item_title).extract()[0]
             item['time'] = sel.xpath(xpath_item_time).extract()[0]
-
-            # print(type(sp_allowed_domains[0]))
-            # print(type(sel.xpath(xpath_item_link).extract()[0]))
-
 
             item['link'] = sp_allowed_domains[0] + sel.xpath(xpath_item_link).extract()[0]
             # print(item['title'], item['time'], item['link'])

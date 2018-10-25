@@ -36,6 +36,7 @@ def __crawl_task(__spider_name):
 
     _time = time.strftime("%Y-%m-%d_%H-%M-%S", time.localtime())
     # __task_os_cmd += ' -o ./log/%s_%s.json' % (_time, __spider_name)    # 输出到文件
+    # __task_os_cmd += ' -s FEED_EXPORT_ENCODING=UTF-8'
     # __task_os_cmd += ' -t json'         # 输出文件后缀名
 
     # print(__task_os_cmd)
@@ -63,6 +64,7 @@ def mymain():
 def startServer():
     # print("只执行一次，不会反复执行")
     os.system("python ./crawlerview/manage.py runserver")
+    # pass
     # os.system("python api.py")
     
 

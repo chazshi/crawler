@@ -25,9 +25,14 @@ urlpatterns = [
     path('', crawler_index.index),   # 显示页面
     # path('api/', include('rest_framework.urls', namespace='rest_framework')),
 
-    path('add/', crawler_index.add),   # 添加mock数据
-    path('drop/', crawler_index.drop),   # 删除所有数据表
+    # api
+    path('infos/add/', crawler_index.add),   # 添加mock数据
+    path('infos/drop/', crawler_index.drop),   # 删除所有数据表
 
-    path('api/', crawler_index.api),   # get post city数据 api
+    path('infos/', crawler_index.infos),   # get post city数据 api
+    path('infos/citys', crawler_index.citys)
+
+
+    # TODO: 增加【增加地区】页面，增加【获取前十条最新】功能，增加【提醒设置】功能
 ]
 

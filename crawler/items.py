@@ -23,3 +23,8 @@ class HefeiItem(scrapy.Item):
     title = scrapy.Field()
     time = scrapy.Field()
     link = scrapy.Field()
+
+class MaanshanItem(scrapy.Item):
+    title = scrapy.Field()
+    time = scrapy.Field()
+    link = scrapy.Field()

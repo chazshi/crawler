@@ -17,13 +17,14 @@ class CrawlerPipeline(object):
 class CheckPipeline(object):
     def process_item(self, item, spider):
         if(item):
+            cLen = len(item['city'])
             tLen = len(item['title'])
             tmLen = len(item['time'])
             lLen = len(item['link'])
 
-            print(item['title'], item['time'], item['link'])
+            # print(item['city'], item['title'], item['time'], item['link'])
 
-            if(tLen == tmLen & tmLen == lLen):
+            if(cLen == tLen & tLen == tmLen & tmLen == lLen):
                 return item
                 # pass
             else:
@@ -31,7 +32,7 @@ class CheckPipeline(object):
                 # pass
 
         else:
-            print('no information')
+            print('no info catch!')
 
 
 # 去重
@@ -59,13 +60,13 @@ class DuplicatesPipeline(object):
 # 存入mysql数据库
 # https://www.cnblogs.com/conanwang/p/6028110.html
 class MysqlPipeline(object):
-    def __init__(self, mysql_uri, mysql_user, mysql_password, mysql_database):
+    def __init__(self, mysql_uri, mysql_user, mysql_password, mysql_database, mysql_table):
         # self.mysql_uri = mysql_uri
         # self.mysql_user = mysql_user
         # self.mysql_password = mysql_password
         # self.mysql_database = mysql_database
-        self.client = mysql(mysql_uri, mysql_user, mysql_password, mysql_database)
-
+        self.client = mysql(mysql_uri, mysql_user, mysql_password, mysql_database, mysql_table)
+        # print("链接数据库")
     
 
     def open_spider(self, spider):
@@ -100,19 +101,20 @@ class MysqlPipeline(object):
             mysql_uri = crawler.settings.get('MYSQL_URI'),
             mysql_user = crawler.settings.get('MYSQL_USER'),
             mysql_password = crawler.settings.get('MYSQL_PASSWORD'),
-            mysql_database = crawler.settings.get('MYSQL_DATABASE')
+            mysql_database = crawler.settings.get('MYSQL_DATABASE'),
+            mysql_table = crawler.settings.get('MYSQL_TABLE')
         )
 
     def process_item(self, item, spider):
+        # print('connect db!')
         # print(spider)
         # print(item['title'], item['time'], item['link'])
         # test()
         # print(spider.name)
         
-        
-        self.client.createTable(spider.name)    #不存在则创建数据库 #多次执行，有优化空间
-        
-        self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name) # 存入数据库
+        # print('city: %s' % spider.city)
+        # self.client.createTable(spider.name)    #不存在则创建数据库 #多次执行，有优化空间 // django创建了，不需要再创建
+        self.client.storeIntoMsql(spider.city, item['title'], item['time'], item['link']) # 存入数据库
         
         # res = self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name) # 存入数据库
         # print('受影响条数：%s' % res) # 1正确 -1错误

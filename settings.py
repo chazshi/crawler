@@ -5,3 +5,4 @@ class Settings(object):
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = '123456'
     MYSQL_DATABASE = 'crawler'
+    MYSQL_TABLE = 'infos'
