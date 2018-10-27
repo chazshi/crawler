@@ -1,19 +1,20 @@
 # -*- coding: utf-8 -*-
 import scrapy
-from crawler.items import MaanshanItem
+from crawler.items import WuhuItem
 
-sp_name = 'maanshan'                          # 爬虫名
-city = '马鞍山'
-sp_allowed_domains = ['zbcg.mas.gov.cn']     # 允许访问的域名
-sp_start_urls = ['http://zbcg.mas.gov.cn/maszbw/jygg/028002/028002001/']   # 要爬取的页面
+sp_name = 'wuhu'                          # 爬虫名
+city = '芜湖'
+sp_allowed_domains = ['whsggzy.wuhu.gov.cn']     # 允许访问的域名
+sp_start_urls = ['http://whsggzy.wuhu.gov.cn/jyxx/005002/005002001/moreinfo_listjy.html']   # 要爬取的页面
 # xpath_title = '/html/head/title/text()'                 # 标题，暂时没用上
-xpath_list = '//td[@class="border1"]/table//tr/td/table//tr/td/table//tr/td[@valign="top"]/table//tr'    # 爬取li的css
+xpath_list = '/html/body/div[@id="iframe005002001"]/table[@class="ewb-table"]/tbody[@id="list005002001body"]/tr'    # 爬取li的css
 # css_list = '.border1 table tbody tr:nth-child(2) td table:nth-child(2) tbody tr'    # 爬取li的css
-xpath_item_title = './td[@class="TDStyle"]/a/text()'         # li中的主要信息
-xpath_item_time = './td[@align="right"]/font/text()'           # li中的时间信息
-xpath_item_link = './td[@class="TDStyle"]/a/@href'           # li中的链接信息
 
-class MaanshanSpider(scrapy.Spider):
+xpath_item_title = './td[@class="ewb-width2"]/a/text()'         # li中的主要信息
+xpath_item_time = './td[last()]/text()'           # li中的时间信息
+xpath_item_link = './td[@class="ewb-width2"]/a/@href'           # li中的链接信息
+
+class WuhuSpider(scrapy.Spider):
     name = sp_name
     city = city
     allowed_domains = sp_allowed_domains
@@ -26,7 +27,10 @@ class MaanshanSpider(scrapy.Spider):
 
         for sel in response.xpath(xpath_list):
             # print('sel: %s'% sel)
-            item = MaanshanItem()
+            item = WuhuItem()
+            # print(sel.xpath(xpath_item_title))
+
+
             item['title'] = sel.xpath(xpath_item_title).extract()[0]
             item['time'] = sel.xpath(xpath_item_time).extract()[0]
             

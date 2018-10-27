@@ -20,7 +20,6 @@ MYSQL_USER = msetting.MYSQL_USER
 MYSQL_PASSWORD = msetting.MYSQL_PASSWORD
 MYSQL_DATABASE = msetting.MYSQL_DATABASE
 
-from utils import MysqlCon as mysql
 
 # client = mysql(MYSQL_URI, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DATABASE)
 # result = client.getAllItemsByTableName('city_anqing')
@@ -107,8 +106,18 @@ def citys(request, format=None):
     #     pass
 
 def infos(request, format=None):
+    print(request)
+    # print(date)
     if request.method == 'GET':
-        snippets = Infos.objects.all()
+        # print(request.GET.get('date'))
+        
+        if(request.GET.get('date')):
+            # 大于今天
+            snippets = Infos.objects.filter(time__gte=request.GET.get('date'))
+        else:
+            snippets = Infos.objects.all()
+
+        # snippets = Infos.objects.all()
         # for item in snippets:
         #     print(item.title)
         

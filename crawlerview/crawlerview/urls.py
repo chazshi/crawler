@@ -31,8 +31,9 @@ urlpatterns = [
 
     path('infos/', crawler_index.infos),   # get post city数据 api
     path('infos/citys', crawler_index.citys)
+    # path('infos/')
 
 
-    # TODO: 增加【增加地区】页面，增加【获取前十条最新】功能，增加【提醒设置】功能
+    # TODO: 增加【增加地区】页面，增加【获取今天最新】功能，增加【提醒设置】功能
 ]
 

@@ -27,7 +27,7 @@ SECRET_KEY = 'vl_#014&0yb-7ibwoa5f36s7djo7d*7c@-))$xqe9%e%doxe!p'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -62,7 +62,8 @@ ROOT_URLCONF = 'crawlerview.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR + r'\crawlerview\templates', ],
+        'DIRS': [os.path.join(BASE_DIR, 'crawlerview/templates')],
+        # 'DIRS': [BASE_DIR + r'\crawlerview\templates', ], 调试时这样，部署时上面的
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

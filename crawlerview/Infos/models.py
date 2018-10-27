@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class Infos(models.Model):
     city = models.CharField(max_length=10)
-    title = models.CharField(max_length=300)
+    title = models.CharField(unique=True, max_length=250)
     time = models.CharField(max_length=300)
     link = models.CharField(max_length=300)
     # CharField（相当于varchar）、DateField（相当于datetime）

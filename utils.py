@@ -1,3 +1,6 @@
+import pymysql 
+pymysql.install_as_MySQLdb()
+
 import MySQLdb as msqldb
 # import pymysql as msqldb
 # import time

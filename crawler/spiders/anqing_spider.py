@@ -42,3 +42,4 @@ class AnqingSpider(scrapy.Spider):
             item['link'] = sp_allowed_domains[0] + sel.xpath(xpath_item_link).extract()[0]
 
             yield item
+

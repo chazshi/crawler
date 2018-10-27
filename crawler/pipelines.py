@@ -114,7 +114,36 @@ class MysqlPipeline(object):
         
         # print('city: %s' % spider.city)
         # self.client.createTable(spider.name)    #不存在则创建数据库 #多次执行，有优化空间 // django创建了，不需要再创建
-        self.client.storeIntoMsql(spider.city, item['title'], item['time'], item['link']) # 存入数据库
+
+        # 2018-10-26 00:00 格式化成 2018-10-26
+        # 18-10-26 格式化成 2018-10-26
+        # print(len(item['time'].strip()))
+        item_time = item['time'].strip()
+
+        if(len(item_time) == 16): # it should be equal to 10.
+            # print(item['title'], item['time'], item['link'])
+            # print(item['time'][0:10])
+            item_time = item_time[0:10]
+            # self.client.storeIntoMsql(spider.city, item['title'], item['time'][0:10], item['link']) # 存入数据库
+        elif(len(item_time) == 10):
+            # print(item['title'], item['time'], item['link'])
+            # self.client.storeIntoMsql(spider.city, item['title'], item['time'], item['link']) # 存入数据库
+            pass
+            # print(item['title'], item['time'], item['link'])
+        elif(len(item_time) == 8):
+            # print('20' + item['time'])
+            item_time = '20' + item_time
+            # self.client.storeIntoMsql(spider.city, item['title'], '20' + item['time'], item['link']) # 存入数据库
+        else:
+            print('time field with incorrect length!')
+
+
+        self.client.storeIntoMsql(spider.city, item['title'], item_time, item['link']) # 存入数据库
+
+
+        # print('len: %s' % len(item['time']))
+
+        # self.client.storeIntoMsql(spider.city, item['title'], item['time'], item['link']) # 存入数据库
         
         # res = self.client.storeIntoMsql(item['title'], item['time'], item['link'], spider.name) # 存入数据库
         # print('受影响条数：%s' % res) # 1正确 -1错误
