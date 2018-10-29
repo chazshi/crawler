@@ -65,7 +65,7 @@ def mymain():
 
 def startServer():
     # print("只执行一次，不会反复执行")
-    os.system("python ./crawlerview/manage.py runserver 192.168.0.102:8000")
+    os.system("python ./crawlerview/manage.py runserver localhost:8001")
     # pass
     # os.system("python api.py")
     
