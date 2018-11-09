@@ -56,3 +56,9 @@ class XuanchengItem(scrapy.Item):
     time = scrapy.Field()
     link = scrapy.Field()
 
+# 宣城的网站常年打不开
+
+class FuyangItem(scrapy.Item):
+    title = scrapy.Field()
+    time = scrapy.Field()
+    link = scrapy.Field()

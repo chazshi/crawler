@@ -30,7 +30,8 @@ class MaanshanSpider(scrapy.Spider):
             item['title'] = sel.xpath(xpath_item_title).extract()[0]
             item['time'] = sel.xpath(xpath_item_time).extract()[0]
             
-            item['link'] = sp_allowed_domains[0] + sel.xpath(xpath_item_link).extract()[0]
+            ## 马鞍山的地址比较特殊
+            item['link'] = sel.xpath(xpath_item_link).extract()[0]
 
             # print(item['title'], item['time'], item['link'])
             # print("time: %s" % item['time'])
